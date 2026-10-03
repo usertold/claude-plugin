@@ -57,7 +57,7 @@ Use the user's real product names and terms. Don't invent features, pages, or UR
 
 1. Call `studies.validate_script` and fix every error it reports.
 2. Show the user the complete draft: goals, each segment in plain language, and the JSON. Explain any choice they might disagree with.
-3. Save only after the user approves. Find the project with `projects.list` and reuse a fitting one. Create one with `projects.create` (it needs an `organizationRef` from `organizations.list`) only if none fits and the user agrees. Then call `studies.create`. Include `allowedOrigins` if you know the site's origin.
+3. Save only after the user approves. Find the project with `projects.list` and reuse a fitting one. Create one with `projects.create` (it needs an `organizationRef` from `organizations.list`) only if none fits and the user agrees. Then call `studies.create`. Leave `allowedOrigins` out: by default the Study runs on any site where the project's widget is installed.
 
 `studies.create` saves a **draft**. It does not put anything in front of participants. Going live is a separate decision; offer the `launch-study` skill for it.
 

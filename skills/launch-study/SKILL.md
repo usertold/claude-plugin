@@ -18,7 +18,7 @@ Call `projects.list`, then `studies.list` for the project. If there is no Study 
 | Situation | Path |
 |-|-|
 | The participants use the user's website or web app | **Widget**: install once and the invitation appears on matching pages |
-| The participants can be emailed or messaged a link | **Direct link**: set `invitation.presentation_mode: "direct_link"` with `panel.headline` and `panel.cta`, and put at least one origin in `allowedOrigins` (the link is built from the first). `studies.get` then returns `recruitmentUrl`. It works only while the Study is active, and switching the mode revokes it |
+| The participants can be emailed or messaged a link | **Direct link**: set `invitation.presentation_mode: "direct_link"` with `panel.headline` and `panel.cta`, and put the site's origin in `allowedOrigins`: the link is built from the first entry. This is the one case that needs an origin. `studies.get` then returns `recruitmentUrl`. It works only while the Study is active, and switching the mode revokes it |
 | One specific person should record a session on any website | **Recording invitation**: `recordings.create_invitation` (existing project) or `recordings.create_website_invitation` (any site). The participant installs a Chrome extension; no UserTold account needed. `create_website_invitation` needs an `organizationRef` and an `externalRef` you choose; reuse it on retry to avoid duplicates |
 
 Recording invitations are created, not sent. Hand the `launchUrl` to the user; they decide who receives it.
@@ -29,7 +29,7 @@ Recording invitations are created, not sent. Hand the `launchUrl` to the user; t
 2. Install it **once** in the shared layout so it loads on every page. The same snippet serves every Study in the project. There is no per-study install.
    - If you can edit the user's codebase, find the root layout or document template and add the tag there. Follow the framework's own way of adding third-party scripts. In Next.js that is `next/script`, in Rails the application layout, in a plain site the shared `<head>`.
    - Otherwise, give the user the snippet and say where it goes.
-3. If the Study has `allowedOrigins`, every origin the widget runs on must be listed, origin only, e.g. `https://app.example.com`. An empty list allows any origin. Change them with `studies.update` if needed.
+3. Leave `allowedOrigins` empty. That is the default, and it lets the Study run wherever the widget is installed. The widget only runs where the project snippet is installed, so don't propose restricting origins yourself; set them only when the user asks to. Once the list is set, every origin the widget should run on must be in it, origin only, e.g. `https://app.example.com`.
 4. If the site sets a source-allowlist Content-Security-Policy, add the widget origins to the directives it already defines:
    ```text
    script-src https://usertold.ai https://assets.usertold.ai
