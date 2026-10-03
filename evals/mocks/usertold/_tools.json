@@ -1,0 +1,4100 @@
+{
+ "tools": [
+  {
+   "name": "feedback_submit",
+   "title": "Report a UserTold problem or suggestion",
+   "description": "Queues an authorized bug report or suggestion about UserTold to its team. The report cannot be recalled. Not for feedback about the user's product. Exclude credentials, personal data, and raw private content.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "category": {
+      "type": "string",
+      "enum": [
+       "bug",
+       "unexpected_behavior",
+       "confusing_behavior",
+       "suggestion"
+      ],
+      "description": "Nature of the feedback: bug for a failure, unexpected_behavior for a surprising result, confusing_behavior for unclear usage or output, or suggestion for an improvement.",
+      "maxLength": 2000
+     },
+     "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "description": "Concise description of the problem or suggestion without credentials, personal data, participant identity, or raw private content."
+     },
+     "relatedTool": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$",
+      "description": "Optional MCP tool name related to the feedback, such as \"evidence.list\"."
+     },
+     "expectedBehavior": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "Optional concise description of what you expected UserTold to do."
+     },
+     "actualBehavior": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "Optional concise description of what UserTold did instead, including a safe error message when useful."
+     },
+     "additionalContext": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "Optional safe reproduction steps or context. Do not include credentials, personal data, participant identity, or raw private content."
+     }
+    },
+    "required": [
+     "category",
+     "summary"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Report a UserTold problem or suggestion",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "setup_recommend",
+   "title": "Plan user interviews and usability research",
+   "description": "Use when the user wants customer discovery, interviews, usability tests, concept tests, or research into onboarding, churn, pricing, or feature feedback. Pass their goal in their own words. Returns guidance grounded in UserTold documentation and saves the request and response for service improvement without changing projects or studies. For account references, existing results, or an exact operation, call the relevant tool directly.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "request": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 4000,
+      "description": "The user\u2019s research or feedback goal in their own words; exclude personal data and secrets because requests are saved for service improvement."
+     }
+    },
+    "required": [
+     "request"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Plan user interviews and usability research",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "projects_list",
+   "title": "Find accessible research projects",
+   "description": "Lists accessible projects and their projectRef values for studies and interviews. No reference is needed. Reuse an existing starter project instead of creating a duplicate. Returns 25 records per page; when truncated is true, increase offset by count.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000,
+      "description": "Number of accessible records to skip; defaults to 0."
+     }
+    },
+    "required": [],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Find accessible research projects",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "organizations_list",
+   "title": "Find accessible research organizations",
+   "description": "Lists accessible organizations and their organizationRef values for projects.create. No reference is needed. Returns 25 records per page; when truncated is true, increase offset by count.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000,
+      "description": "Number of accessible records to skip; defaults to 0."
+     }
+    },
+    "required": [],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Find accessible research organizations",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "projects_create",
+   "title": "Create a product research project",
+   "description": "Creates a private project and draft starter interview study in an organization from organizations.list. Returns projectRef for later calls. Does not configure billing, members, or GitHub/Linear connections.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "organizationRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Organization handle returned by organizations.list"
+     },
+     "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Project name"
+     },
+     "handle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Optional URL-friendly handle; a unique handle is generated from the name when omitted"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Optional Project description"
+     }
+    },
+    "required": [
+     "organizationRef",
+     "name"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Create a product research project",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "projects_get_widget_setup",
+   "title": "Get website interview installation and readiness",
+   "description": "Returns the project widget snippet, saved installation verification, and interview readiness. Install once across the website; page and language rules select the active interview study. Does not run a new verification.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     }
+    },
+    "required": [
+     "projectRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Get website interview installation and readiness",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "projects_verify_widget_installation",
+   "title": "Check website interview installation",
+   "description": "Checks the UserTold widget loader, project key, and browser security policies on a public HTTPS page. Replaces the saved verification URL and time after a passing check and preserves previous success on warnings or failures. Does not execute the app or verify microphone and screen permissions in a browser.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "url": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 2048,
+      "format": "uri",
+      "pattern": "^https://",
+      "examples": [
+       "https://app.example.com/settings"
+      ],
+      "description": "Exact absolute public HTTPS page to verify, using the standard HTTPS port and no credentials. Example: \"https://app.example.com/settings\"."
+     }
+    },
+    "required": [
+     "projectRef",
+     "url"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Check website interview installation",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "studies_validate_script",
+   "title": "Validate an interview or usability test script",
+   "description": "Validates a StudyScriptV2 before studies.create or studies.update. Returns errors or a summary of steps, goals, and modes. Does not save or activate a study; no project is required.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "script": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 5,
+      "properties": {
+       "version": {
+        "type": "integer",
+        "enum": [
+         2
+        ],
+        "description": "Study script contract version; use 2."
+       },
+       "segments": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 100,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "maxProperties": 15,
+         "properties": {
+          "id": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 100,
+           "description": "Stable segment identifier. Example: \"opening\"."
+          },
+          "title": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 300,
+           "description": "Short reviewer-facing segment title."
+          },
+          "mode": {
+           "type": "string",
+           "enum": [
+            "talk",
+            "speak",
+            "observe"
+           ],
+           "maxLength": 7,
+           "description": "Segment behavior: talk conducts an interview, speak delivers fixed copy, and observe watches a participant task."
+          },
+          "experimental_capabilities": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 7,
+           "properties": {
+            "realtime_analysis": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_analysis capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_page_context": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_page_context capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_site_search": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_site_search capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_knowledge_query": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_knowledge_query capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_visual_snapshots": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_visual_snapshots capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_visual_guidance": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_visual_guidance capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_same_origin_navigation": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_same_origin_navigation capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            }
+           },
+           "description": "Optional experimental runtime capability overrides. Omit for the stable default behavior."
+          },
+          "instruction": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Instruction for talk or observe behavior. An observe segment requires instruction or conductor_context."
+          },
+          "conductor_context": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Additional private context for the interviewer or observer. An observe segment requires this or instruction."
+          },
+          "speak_text": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Exact text delivered by a speak segment; required when mode is speak."
+          },
+          "speak_submode": {
+           "type": "string",
+           "enum": [
+            "speak_fast",
+            "speak_balanced",
+            "speak_rich"
+           ],
+           "maxLength": 14,
+           "description": "Speech delivery profile: fast, balanced, or rich. Applies to speak segments."
+          },
+          "speak_interruptible": {
+           "type": "boolean",
+           "description": "Whether the participant may interrupt a speak segment."
+          },
+          "talk": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 4,
+           "description": "Optional configuration for a talk segment.",
+           "properties": {
+            "research_mode": {
+             "type": "string",
+             "enum": [
+              "discovery",
+              "jtbd_switch",
+              "usability_debrief",
+              "concept_reaction"
+             ],
+             "maxLength": 20,
+             "description": "Interview strategy: discovery, jtbd_switch, usability_debrief, or concept_reaction."
+            },
+            "system_prompt": {
+             "type": "string",
+             "maxLength": 20000,
+             "description": "Optional segment-specific interviewer instructions appended to the Study defaults."
+            },
+            "tools": {
+             "type": "array",
+             "maxItems": 20,
+             "items": {
+              "oneOf": [
+               {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 4,
+                "properties": {
+                 "type": {
+                  "type": "string",
+                  "enum": [
+                   "function"
+                  ],
+                  "maxLength": 8,
+                  "description": "Tool kind; use \"function\" or omit it for an inline function tool."
+                 },
+                 "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Stable function name exposed to the interviewer model."
+                 },
+                 "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20000,
+                  "description": "When and why the interviewer should call this function."
+                 },
+                 "parameters": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "maxProperties": 4,
+                  "description": "Object-shaped function parameters.",
+                  "properties": {
+                   "type": {
+                    "type": "string",
+                    "enum": [
+                     "object"
+                    ],
+                    "maxLength": 6,
+                    "description": "Parameter container type; use \"object\"."
+                   },
+                   "properties": {
+                    "type": "object",
+                    "maxProperties": 50,
+                    "propertyNames": {
+                     "type": "string",
+                     "minLength": 1,
+                     "maxLength": 100
+                    },
+                    "additionalProperties": {
+                     "type": "object",
+                     "additionalProperties": false,
+                     "maxProperties": 3,
+                     "properties": {
+                      "type": {
+                       "type": "string",
+                       "minLength": 1,
+                       "maxLength": 40,
+                       "description": "JSON value type expected by this function parameter, for example \"string\" or \"number\"."
+                      },
+                      "description": {
+                       "type": "string",
+                       "maxLength": 20000,
+                       "description": "Plain-language guidance for the model when supplying this parameter."
+                      },
+                      "enum": {
+                       "type": "array",
+                       "maxItems": 50,
+                       "uniqueItems": true,
+                       "items": {
+                        "type": "string",
+                        "maxLength": 300
+                       },
+                       "description": "Optional fixed string values accepted by this parameter."
+                      }
+                     },
+                     "required": [
+                      "type"
+                     ]
+                    },
+                    "description": "Map of parameter names to their schemas."
+                   },
+                   "required": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "uniqueItems": true,
+                    "items": {
+                     "type": "string",
+                     "minLength": 1,
+                     "maxLength": 100
+                    },
+                    "description": "Names of parameters that must be supplied."
+                   }
+                  },
+                  "required": [
+                   "type",
+                   "properties"
+                  ]
+                 }
+                },
+                "required": [
+                 "name",
+                 "description",
+                 "parameters"
+                ],
+                "description": "Inline function available to the interviewer during this talk segment."
+               },
+               {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 7,
+                "properties": {
+                 "type": {
+                  "type": "string",
+                  "enum": [
+                   "mcp"
+                  ],
+                  "maxLength": 3,
+                  "description": "Tool kind; use \"mcp\" for a remote server or connected connector."
+                 },
+                 "server_label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Stable label used to identify this MCP server in the interview."
+                 },
+                 "server_url": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048,
+                  "pattern": "^https://",
+                  "description": "Remote MCP server HTTPS URL. Provide exactly one of server_url or connector_id."
+                 },
+                 "connector_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Connected MCP connector identifier. Provide exactly one of connector_id or server_url."
+                 },
+                 "allowed_tools": {
+                  "type": "array",
+                  "maxItems": 50,
+                  "uniqueItems": true,
+                  "items": {
+                   "type": "string",
+                   "minLength": 1,
+                   "maxLength": 100
+                  },
+                  "description": "Optional allowlist of tool names exposed from this MCP server."
+                 },
+                 "require_approval": {
+                  "type": "string",
+                  "enum": [
+                   "never",
+                   "always"
+                  ],
+                  "maxLength": 6,
+                  "description": "Whether every MCP call requires participant approval: never or always."
+                 },
+                 "server_description": {
+                  "type": "string",
+                  "maxLength": 20000,
+                  "description": "Optional guidance explaining when the interviewer should use this MCP server."
+                 }
+                },
+                "required": [
+                 "type",
+                 "server_label"
+                ],
+                "description": "Remote MCP server or connected connector available during this talk segment."
+               }
+              ],
+              "description": "One interviewer tool: either an inline function or an MCP server connection."
+             },
+             "description": "Optional functions or MCP connections available in this talk segment."
+            },
+            "goals": {
+             "type": "array",
+             "maxItems": 50,
+             "uniqueItems": true,
+             "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+             },
+             "description": "Goal ids from the top-level goals array assigned to this talk segment."
+            }
+           }
+          },
+          "realtime_navigation": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 1,
+           "description": "Same-origin navigation bounds for a talk segment with realtime_same_origin_navigation enabled.",
+           "properties": {
+            "allowed_paths": {
+             "type": "array",
+             "maxItems": 50,
+             "uniqueItems": true,
+             "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+             },
+             "description": "Allowed same-origin pathname prefixes, each beginning with /. Example: [\"/docs\", \"/settings\"]."
+            }
+           }
+          },
+          "advance_when": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "description": "Plain-language condition that tells the conductor when this segment is complete."
+          },
+          "max_duration_s": {
+           "type": "number",
+           "minimum": 1,
+           "maximum": 86400,
+           "description": "Maximum segment duration in seconds."
+          },
+          "host_actions_on_enter": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "maxProperties": 5,
+            "properties": {
+             "type": {
+              "type": "string",
+              "enum": [
+               "highlight",
+               "navigate",
+               "scroll_to"
+              ],
+              "maxLength": 10,
+              "description": "Host action: highlight or scroll_to a selector, or navigate to a URL."
+             },
+             "selector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "description": "Required CSS selector for highlight and scroll_to."
+             },
+             "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Required destination URL for navigate."
+             },
+             "label": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "Optional human-readable action label."
+             },
+             "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000,
+              "description": "Optional highlight or scroll duration in milliseconds."
+             }
+            },
+            "required": [
+             "type"
+            ],
+            "description": "Action for the host product to perform when entering or leaving a segment."
+           },
+           "description": "Optional host-product actions performed when the segment begins."
+          },
+          "host_actions_on_exit": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "maxProperties": 5,
+            "properties": {
+             "type": {
+              "type": "string",
+              "enum": [
+               "highlight",
+               "navigate",
+               "scroll_to"
+              ],
+              "maxLength": 10,
+              "description": "Host action: highlight or scroll_to a selector, or navigate to a URL."
+             },
+             "selector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "description": "Required CSS selector for highlight and scroll_to."
+             },
+             "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Required destination URL for navigate."
+             },
+             "label": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "Optional human-readable action label."
+             },
+             "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000,
+              "description": "Optional highlight or scroll duration in milliseconds."
+             }
+            },
+            "required": [
+             "type"
+            ],
+            "description": "Action for the host product to perform when entering or leaving a segment."
+           },
+           "description": "Optional host-product actions performed when the segment ends."
+          }
+         },
+         "required": [
+          "id",
+          "title",
+          "mode"
+         ],
+         "description": "One ordered interview segment. Minimal talk segment: {\"id\":\"opening\",\"title\":\"Understand the problem\",\"mode\":\"talk\",\"instruction\":\"Ask what the participant was trying to accomplish.\"}."
+        },
+        "description": "Ordered interview flow containing at least one talk, speak, or observe segment."
+       },
+       "goals": {
+        "type": "array",
+        "maxItems": 50,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "maxProperties": 2,
+         "properties": {
+          "id": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 100,
+           "description": "Stable goal identifier referenced by talk.goals. Example: \"understand_blocker\"."
+          },
+          "description": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "description": "What the interviewer should learn, written as a concrete research objective."
+          }
+         },
+         "required": [
+          "id",
+          "description"
+         ],
+         "description": "One reusable research goal with a stable id and an interviewer-facing description."
+        },
+        "description": "Reusable research goals. Use [] when the minimal script has no separately tracked goals."
+       },
+       "experimental_capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 7,
+        "properties": {
+         "realtime_analysis": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_analysis capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_page_context": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_page_context capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_site_search": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_site_search capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_knowledge_query": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_knowledge_query capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_visual_snapshots": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_visual_snapshots capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_visual_guidance": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_visual_guidance capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_same_origin_navigation": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_same_origin_navigation capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         }
+        },
+        "description": "Optional experimental runtime capability overrides. Omit for the stable default behavior."
+       },
+       "defaults": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 4,
+        "description": "Optional defaults inherited by segments unless overridden.",
+        "properties": {
+         "voice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Default GPT-Live-1 voice identifier for Talk segments."
+         },
+         "system_prompt": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Default interviewer instructions shared by talk segments."
+         },
+         "speak_submode": {
+          "type": "string",
+          "enum": [
+           "speak_fast",
+           "speak_balanced",
+           "speak_rich"
+          ],
+          "maxLength": 14,
+          "description": "Default speech delivery profile for speak segments."
+         },
+         "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 35,
+          "description": "Default BCP 47 interview language, for example \"en\" or \"de\"."
+         }
+        }
+       }
+      },
+      "required": [
+       "version",
+       "segments",
+       "goals"
+      ],
+      "description": "Complete StudyScriptV2 interview flow. Serialized JSON must be 250000 characters or fewer. Minimal example: {\"version\":2,\"segments\":[{\"id\":\"opening\",\"title\":\"Understand the problem\",\"mode\":\"talk\",\"instruction\":\"Ask what the participant was trying to accomplish.\"}],\"goals\":[]}.",
+      "examples": [
+       {
+        "version": 2,
+        "segments": [
+         {
+          "id": "opening",
+          "title": "Understand the problem",
+          "mode": "talk",
+          "instruction": "Ask what the participant was trying to accomplish."
+         }
+        ],
+        "goals": []
+       }
+      ]
+     }
+    },
+    "required": [
+     "script"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Validate an interview or usability test script",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "studies_list",
+   "title": "Find interview studies and usability tests",
+   "description": "Lists configured interview studies and usability tests by title, research topic, or status. Returns newest-first summaries and studyRef values for studies.get or studies.get_results. For recorded participant interviews, use interviews.list. Full scripts and page placement are in studies.get.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 500,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "draft",
+       "active",
+       "paused",
+       "closed"
+      ],
+      "description": "Optional lifecycle-status filter",
+      "maxLength": 2000
+     },
+     "search": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Case-insensitive search across Study title, description, and handle"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Maximum results (default and max 10)"
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Pagination offset after lifecycle filtering"
+     }
+    },
+    "required": [
+     "projectRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Find interview studies and usability tests",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "studies_get_results",
+   "title": "Review user research results",
+   "description": "Returns existing Study results with interview counts, supporting quotes, source references, related findings, and uncertainty. Follow continuation offsets for omitted records; use evidence.get or interviews.get_context for individual moments. Does not generate a new synthesis.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "studyRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Study handle within the selected project, as returned by studies.list."
+     },
+     "interviewLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Maximum Interview summaries (default 5, max 10)"
+     },
+     "interviewOffset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Continuation offset for Interview summaries"
+     },
+     "evidenceLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "description": "Maximum source-linked Evidence items (default 10, max 20)"
+     },
+     "evidenceOffset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Continuation offset for Evidence"
+     },
+     "findingLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Maximum related Finding summaries (default 5, max 10)"
+     },
+     "findingOffset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Continuation offset for related Findings"
+     }
+    },
+    "required": [
+     "projectRef",
+     "studyRef"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Review user research results",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "studies_get",
+   "title": "Read interview questions, placement, and invitation link",
+   "description": "Returns a Study's script, goals, invitation, page and language placement, websites, and existing recruitment link. If scriptOmitted=true, retrieve the full script through the dashboard or CLI.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "studyRef": {
+      "type": "string",
+      "description": "Study handle within the selected project, as returned by studies.list.",
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "projectRef",
+     "studyRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Read interview questions, placement, and invitation link",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "studies_create",
+   "title": "Create a user interview or usability test",
+   "description": "Saves a validated interview or usability-test script as a draft Study. Configures invitations, page placement, and websites; a direct-link invitation provisions a revocable recruitment link in studies.get. Does not activate collection. The install-once snippet is in projects.get_widget_setup.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 500,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Participant- and reviewer-facing study title"
+     },
+     "handle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Optional URL-friendly study handle"
+     },
+     "script": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 5,
+      "properties": {
+       "version": {
+        "type": "integer",
+        "enum": [
+         2
+        ],
+        "description": "Study script contract version; use 2."
+       },
+       "segments": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 100,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "maxProperties": 15,
+         "properties": {
+          "id": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 100,
+           "description": "Stable segment identifier. Example: \"opening\"."
+          },
+          "title": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 300,
+           "description": "Short reviewer-facing segment title."
+          },
+          "mode": {
+           "type": "string",
+           "enum": [
+            "talk",
+            "speak",
+            "observe"
+           ],
+           "maxLength": 7,
+           "description": "Segment behavior: talk conducts an interview, speak delivers fixed copy, and observe watches a participant task."
+          },
+          "experimental_capabilities": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 7,
+           "properties": {
+            "realtime_analysis": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_analysis capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_page_context": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_page_context capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_site_search": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_site_search capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_knowledge_query": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_knowledge_query capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_visual_snapshots": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_visual_snapshots capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_visual_guidance": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_visual_guidance capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_same_origin_navigation": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_same_origin_navigation capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            }
+           },
+           "description": "Optional experimental runtime capability overrides. Omit for the stable default behavior."
+          },
+          "instruction": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Instruction for talk or observe behavior. An observe segment requires instruction or conductor_context."
+          },
+          "conductor_context": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Additional private context for the interviewer or observer. An observe segment requires this or instruction."
+          },
+          "speak_text": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Exact text delivered by a speak segment; required when mode is speak."
+          },
+          "speak_submode": {
+           "type": "string",
+           "enum": [
+            "speak_fast",
+            "speak_balanced",
+            "speak_rich"
+           ],
+           "maxLength": 14,
+           "description": "Speech delivery profile: fast, balanced, or rich. Applies to speak segments."
+          },
+          "speak_interruptible": {
+           "type": "boolean",
+           "description": "Whether the participant may interrupt a speak segment."
+          },
+          "talk": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 4,
+           "description": "Optional configuration for a talk segment.",
+           "properties": {
+            "research_mode": {
+             "type": "string",
+             "enum": [
+              "discovery",
+              "jtbd_switch",
+              "usability_debrief",
+              "concept_reaction"
+             ],
+             "maxLength": 20,
+             "description": "Interview strategy: discovery, jtbd_switch, usability_debrief, or concept_reaction."
+            },
+            "system_prompt": {
+             "type": "string",
+             "maxLength": 20000,
+             "description": "Optional segment-specific interviewer instructions appended to the Study defaults."
+            },
+            "tools": {
+             "type": "array",
+             "maxItems": 20,
+             "items": {
+              "oneOf": [
+               {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 4,
+                "properties": {
+                 "type": {
+                  "type": "string",
+                  "enum": [
+                   "function"
+                  ],
+                  "maxLength": 8,
+                  "description": "Tool kind; use \"function\" or omit it for an inline function tool."
+                 },
+                 "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Stable function name exposed to the interviewer model."
+                 },
+                 "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20000,
+                  "description": "When and why the interviewer should call this function."
+                 },
+                 "parameters": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "maxProperties": 4,
+                  "description": "Object-shaped function parameters.",
+                  "properties": {
+                   "type": {
+                    "type": "string",
+                    "enum": [
+                     "object"
+                    ],
+                    "maxLength": 6,
+                    "description": "Parameter container type; use \"object\"."
+                   },
+                   "properties": {
+                    "type": "object",
+                    "maxProperties": 50,
+                    "propertyNames": {
+                     "type": "string",
+                     "minLength": 1,
+                     "maxLength": 100
+                    },
+                    "additionalProperties": {
+                     "type": "object",
+                     "additionalProperties": false,
+                     "maxProperties": 3,
+                     "properties": {
+                      "type": {
+                       "type": "string",
+                       "minLength": 1,
+                       "maxLength": 40,
+                       "description": "JSON value type expected by this function parameter, for example \"string\" or \"number\"."
+                      },
+                      "description": {
+                       "type": "string",
+                       "maxLength": 20000,
+                       "description": "Plain-language guidance for the model when supplying this parameter."
+                      },
+                      "enum": {
+                       "type": "array",
+                       "maxItems": 50,
+                       "uniqueItems": true,
+                       "items": {
+                        "type": "string",
+                        "maxLength": 300
+                       },
+                       "description": "Optional fixed string values accepted by this parameter."
+                      }
+                     },
+                     "required": [
+                      "type"
+                     ]
+                    },
+                    "description": "Map of parameter names to their schemas."
+                   },
+                   "required": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "uniqueItems": true,
+                    "items": {
+                     "type": "string",
+                     "minLength": 1,
+                     "maxLength": 100
+                    },
+                    "description": "Names of parameters that must be supplied."
+                   }
+                  },
+                  "required": [
+                   "type",
+                   "properties"
+                  ]
+                 }
+                },
+                "required": [
+                 "name",
+                 "description",
+                 "parameters"
+                ],
+                "description": "Inline function available to the interviewer during this talk segment."
+               },
+               {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 7,
+                "properties": {
+                 "type": {
+                  "type": "string",
+                  "enum": [
+                   "mcp"
+                  ],
+                  "maxLength": 3,
+                  "description": "Tool kind; use \"mcp\" for a remote server or connected connector."
+                 },
+                 "server_label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Stable label used to identify this MCP server in the interview."
+                 },
+                 "server_url": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048,
+                  "pattern": "^https://",
+                  "description": "Remote MCP server HTTPS URL. Provide exactly one of server_url or connector_id."
+                 },
+                 "connector_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Connected MCP connector identifier. Provide exactly one of connector_id or server_url."
+                 },
+                 "allowed_tools": {
+                  "type": "array",
+                  "maxItems": 50,
+                  "uniqueItems": true,
+                  "items": {
+                   "type": "string",
+                   "minLength": 1,
+                   "maxLength": 100
+                  },
+                  "description": "Optional allowlist of tool names exposed from this MCP server."
+                 },
+                 "require_approval": {
+                  "type": "string",
+                  "enum": [
+                   "never",
+                   "always"
+                  ],
+                  "maxLength": 6,
+                  "description": "Whether every MCP call requires participant approval: never or always."
+                 },
+                 "server_description": {
+                  "type": "string",
+                  "maxLength": 20000,
+                  "description": "Optional guidance explaining when the interviewer should use this MCP server."
+                 }
+                },
+                "required": [
+                 "type",
+                 "server_label"
+                ],
+                "description": "Remote MCP server or connected connector available during this talk segment."
+               }
+              ],
+              "description": "One interviewer tool: either an inline function or an MCP server connection."
+             },
+             "description": "Optional functions or MCP connections available in this talk segment."
+            },
+            "goals": {
+             "type": "array",
+             "maxItems": 50,
+             "uniqueItems": true,
+             "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+             },
+             "description": "Goal ids from the top-level goals array assigned to this talk segment."
+            }
+           }
+          },
+          "realtime_navigation": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 1,
+           "description": "Same-origin navigation bounds for a talk segment with realtime_same_origin_navigation enabled.",
+           "properties": {
+            "allowed_paths": {
+             "type": "array",
+             "maxItems": 50,
+             "uniqueItems": true,
+             "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+             },
+             "description": "Allowed same-origin pathname prefixes, each beginning with /. Example: [\"/docs\", \"/settings\"]."
+            }
+           }
+          },
+          "advance_when": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "description": "Plain-language condition that tells the conductor when this segment is complete."
+          },
+          "max_duration_s": {
+           "type": "number",
+           "minimum": 1,
+           "maximum": 86400,
+           "description": "Maximum segment duration in seconds."
+          },
+          "host_actions_on_enter": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "maxProperties": 5,
+            "properties": {
+             "type": {
+              "type": "string",
+              "enum": [
+               "highlight",
+               "navigate",
+               "scroll_to"
+              ],
+              "maxLength": 10,
+              "description": "Host action: highlight or scroll_to a selector, or navigate to a URL."
+             },
+             "selector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "description": "Required CSS selector for highlight and scroll_to."
+             },
+             "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Required destination URL for navigate."
+             },
+             "label": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "Optional human-readable action label."
+             },
+             "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000,
+              "description": "Optional highlight or scroll duration in milliseconds."
+             }
+            },
+            "required": [
+             "type"
+            ],
+            "description": "Action for the host product to perform when entering or leaving a segment."
+           },
+           "description": "Optional host-product actions performed when the segment begins."
+          },
+          "host_actions_on_exit": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "maxProperties": 5,
+            "properties": {
+             "type": {
+              "type": "string",
+              "enum": [
+               "highlight",
+               "navigate",
+               "scroll_to"
+              ],
+              "maxLength": 10,
+              "description": "Host action: highlight or scroll_to a selector, or navigate to a URL."
+             },
+             "selector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "description": "Required CSS selector for highlight and scroll_to."
+             },
+             "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Required destination URL for navigate."
+             },
+             "label": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "Optional human-readable action label."
+             },
+             "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000,
+              "description": "Optional highlight or scroll duration in milliseconds."
+             }
+            },
+            "required": [
+             "type"
+            ],
+            "description": "Action for the host product to perform when entering or leaving a segment."
+           },
+           "description": "Optional host-product actions performed when the segment ends."
+          }
+         },
+         "required": [
+          "id",
+          "title",
+          "mode"
+         ],
+         "description": "One ordered interview segment. Minimal talk segment: {\"id\":\"opening\",\"title\":\"Understand the problem\",\"mode\":\"talk\",\"instruction\":\"Ask what the participant was trying to accomplish.\"}."
+        },
+        "description": "Ordered interview flow containing at least one talk, speak, or observe segment."
+       },
+       "goals": {
+        "type": "array",
+        "maxItems": 50,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "maxProperties": 2,
+         "properties": {
+          "id": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 100,
+           "description": "Stable goal identifier referenced by talk.goals. Example: \"understand_blocker\"."
+          },
+          "description": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "description": "What the interviewer should learn, written as a concrete research objective."
+          }
+         },
+         "required": [
+          "id",
+          "description"
+         ],
+         "description": "One reusable research goal with a stable id and an interviewer-facing description."
+        },
+        "description": "Reusable research goals. Use [] when the minimal script has no separately tracked goals."
+       },
+       "experimental_capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 7,
+        "properties": {
+         "realtime_analysis": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_analysis capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_page_context": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_page_context capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_site_search": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_site_search capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_knowledge_query": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_knowledge_query capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_visual_snapshots": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_visual_snapshots capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_visual_guidance": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_visual_guidance capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_same_origin_navigation": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_same_origin_navigation capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         }
+        },
+        "description": "Optional experimental runtime capability overrides. Omit for the stable default behavior."
+       },
+       "defaults": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 4,
+        "description": "Optional defaults inherited by segments unless overridden.",
+        "properties": {
+         "voice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Default GPT-Live-1 voice identifier for Talk segments."
+         },
+         "system_prompt": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Default interviewer instructions shared by talk segments."
+         },
+         "speak_submode": {
+          "type": "string",
+          "enum": [
+           "speak_fast",
+           "speak_balanced",
+           "speak_rich"
+          ],
+          "maxLength": 14,
+          "description": "Default speech delivery profile for speak segments."
+         },
+         "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 35,
+          "description": "Default BCP 47 interview language, for example \"en\" or \"de\"."
+         }
+        }
+       }
+      },
+      "required": [
+       "version",
+       "segments",
+       "goals"
+      ],
+      "description": "Complete StudyScriptV2 interview flow. Serialized JSON must be 250000 characters or fewer. Minimal example: {\"version\":2,\"segments\":[{\"id\":\"opening\",\"title\":\"Understand the problem\",\"mode\":\"talk\",\"instruction\":\"Ask what the participant was trying to accomplish.\"}],\"goals\":[]}.",
+      "examples": [
+       {
+        "version": 2,
+        "segments": [
+         {
+          "id": "opening",
+          "title": "Understand the problem",
+          "mode": "talk",
+          "instruction": "Ask what the participant was trying to accomplish."
+         }
+        ],
+        "goals": []
+       }
+      ]
+     },
+     "goals": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "maxProperties": 2,
+       "properties": {
+        "id": {
+         "type": "string",
+         "minLength": 1,
+         "maxLength": 100,
+         "description": "Stable goal identifier referenced by talk.goals. Example: \"understand_blocker\"."
+        },
+        "description": {
+         "type": "string",
+         "minLength": 1,
+         "maxLength": 2000,
+         "description": "What the interviewer should learn, written as a concrete research objective."
+        }
+       },
+       "required": [
+        "id",
+        "description"
+       ],
+       "description": "One reusable research goal with a stable id and an interviewer-facing description."
+      },
+      "maxItems": 50,
+      "description": "Optional study-level goal metadata; use the same goal shape as script.goals."
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Optional study description"
+     },
+     "intakeRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Optional Intake handle to attach; studies.get returns the configured intakeRef."
+     },
+     "targetFindingRefs": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 100
+      },
+      "maxItems": 50,
+      "uniqueItems": true,
+      "description": "Optional findingRef values from findings.list or findings.create_from_evidence that this Study should watch for related Evidence"
+     },
+     "invitation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "launcher": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Compact button that opens the Study Invitation.",
+        "properties": {
+         "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Short participant-facing button label. Example: \"Share feedback\"."
+         },
+         "icon": {
+          "type": "string",
+          "enum": [
+           "feedback",
+           "mic",
+           "diagram",
+           "bug",
+           "research"
+          ],
+          "description": "Launcher glyph: mic for a voice interview, feedback for general feedback, diagram for evidence, bug for defect reporting. research is a magnifying glass and reads as a search box next to a label.",
+          "maxLength": 2000
+         },
+         "style": {
+          "type": "string",
+          "enum": [
+           "calm",
+           "lattice",
+           "beam",
+           "ticket"
+          ],
+          "description": "Launcher treatment. calm is flat with nothing in motion; lattice carries a field of nodes with one travelling signal; beam runs a hairline around the edge; ticket adds a perforated stub printing panel.duration_minutes. Defaults to lattice.",
+          "maxLength": 2000
+         },
+         "shape": {
+          "type": "string",
+          "enum": [
+           "capsule",
+           "rounded",
+           "square"
+          ],
+          "description": "Launcher corner radius: capsule, rounded, or square. Defaults to capsule.",
+          "maxLength": 2000
+         }
+        },
+        "required": [
+         "label",
+         "icon"
+        ]
+       },
+       "panel": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Expanded invitation panel. Required when presentation_mode is contextual or direct_link; optional for passive.",
+        "properties": {
+         "eyebrow": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Optional short label above the headline."
+         },
+         "headline": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Primary participant-facing invitation headline."
+         },
+         "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600,
+          "description": "Optional supporting invitation copy."
+         },
+         "duration_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 240,
+          "description": "Expected interview duration in minutes."
+         },
+         "cta": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Call-to-action label that starts the interview. Example: \"Start interview\"."
+         },
+         "reward": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional single reward promise shown to participants.",
+          "properties": {
+           "kind": {
+            "type": "string",
+            "enum": [
+             "gift",
+             "product",
+             "community",
+             "access"
+            ],
+            "description": "Reward kind: gift, product, community benefit, or access.",
+            "maxLength": 2000
+           },
+           "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Participant-facing reward label."
+           },
+           "eligibility": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "Optional eligibility condition for receiving the reward."
+           },
+           "delivery": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "Optional explanation of how or when the reward is delivered."
+           }
+          },
+          "required": [
+           "kind",
+           "label"
+          ]
+         },
+         "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional HTTPS image shown in the expanded panel.",
+          "properties": {
+           "asset_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Stable identifier for the referenced image asset."
+           },
+           "url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2000,
+            "pattern": "^https://",
+            "description": "Absolute HTTPS URL for the image."
+           },
+           "alt": {
+            "type": "string",
+            "maxLength": 160,
+            "description": "Accessible alternative text; use an empty string only for a decorative image."
+           }
+          },
+          "required": [
+           "asset_id",
+           "url",
+           "alt"
+          ]
+         }
+        },
+        "required": [
+         "headline",
+         "cta"
+        ]
+       },
+       "presentation_mode": {
+        "type": "string",
+        "enum": [
+         "passive",
+         "contextual",
+         "direct_link"
+        ],
+        "description": "How participants encounter the Invitation: passive launcher, contextual panel, or shareable direct link. contextual and direct_link require panel.",
+        "maxLength": 2000
+       },
+       "brand_color": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Six-digit hexadecimal brand colors used by the Invitation.",
+        "properties": {
+         "light": {
+          "type": "string",
+          "maxLength": 7,
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Required light-theme color, for example \"#2563eb\"."
+         },
+         "dark": {
+          "type": "string",
+          "maxLength": 7,
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Optional dark-theme color, for example \"#60a5fa\"."
+         }
+        },
+        "required": [
+         "light"
+        ]
+       },
+       "foreground_color": {
+        "type": "string",
+        "maxLength": 7,
+        "pattern": "^#[0-9a-fA-F]{6}$",
+        "description": "Optional launcher and Invitation foreground color, for example \"#ffffff\". Omit it to choose black or white automatically for each brand color."
+       },
+       "placement": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Screen corner used for the launcher on desktop and mobile.",
+        "properties": {
+         "desktop": {
+          "type": "string",
+          "enum": [
+           "bottom-left",
+           "bottom-right"
+          ],
+          "description": "Desktop launcher corner.",
+          "maxLength": 2000
+         },
+         "mobile": {
+          "type": "string",
+          "enum": [
+           "bottom-left",
+           "bottom-right"
+          ],
+          "description": "Mobile launcher corner.",
+          "maxLength": 2000
+         }
+        },
+        "required": [
+         "desktop",
+         "mobile"
+        ]
+       }
+      },
+      "required": [
+       "launcher",
+       "presentation_mode",
+       "brand_color",
+       "placement"
+      ],
+      "description": "Participant-facing launcher configuration, or null to inherit the built-in compact launcher. Minimal passive example: {\"launcher\":{\"label\":\"Share feedback\",\"icon\":\"research\"},\"presentation_mode\":\"passive\",\"brand_color\":{\"light\":\"#2563eb\"},\"placement\":{\"desktop\":\"bottom-right\",\"mobile\":\"bottom-right\"}}.",
+      "examples": [
+       {
+        "launcher": {
+         "label": "Share feedback",
+         "icon": "mic"
+        },
+        "presentation_mode": "passive",
+        "brand_color": {
+         "light": "#2563eb"
+        },
+        "placement": {
+         "desktop": "bottom-right",
+         "mobile": "bottom-right"
+        }
+       },
+       null
+      ]
+     },
+     "visibility": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "version": {
+        "type": "integer",
+        "enum": [
+         1
+        ],
+        "description": "Visibility contract version; use 1."
+       },
+       "enabled": {
+        "type": "boolean",
+        "description": "Whether this Study participates in automatic placement. false disables it without changing lifecycle status."
+       },
+       "rules": {
+        "type": "array",
+        "maxItems": 100,
+        "description": "Optional ordered page rules. Exclusions win before the most specific matching inclusion.",
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "properties": {
+          "effect": {
+           "type": "string",
+           "enum": [
+            "include",
+            "exclude"
+           ],
+           "description": "Whether a matching pathname is eligible or blocked.",
+           "maxLength": 2000
+          },
+          "match": {
+           "type": "string",
+           "enum": [
+            "exact",
+            "subtree"
+           ],
+           "description": "exact matches one pathname; subtree also matches descendants.",
+           "maxLength": 2000
+          },
+          "pathname": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "pattern": "^/(?!/)(?!.*//)(?!.*[?#\\\\])(?=[\\x21-\\x7E]*$)(?!.*[\"<>^`{}])(?!(?:.*\\/)?(?:\\.|%2[eE]){1,2}(?:\\/|$))(?:$|.*[^/])$",
+           "description": "Absolute pathname beginning with /. Do not include origin, query, or fragment. Example: \"/docs\"."
+          }
+         },
+         "required": [
+          "effect",
+          "match",
+          "pathname"
+         ]
+        }
+       },
+       "languages": {
+        "type": "array",
+        "maxItems": 20,
+        "description": "Optional supported widget-language allowlist.",
+        "items": {
+         "type": "string",
+         "enum": [
+          "en",
+          "es",
+          "ru",
+          "fr",
+          "de",
+          "zh-Hans",
+          "ja"
+         ],
+         "description": "Supported widget language code.",
+         "maxLength": 2000
+        }
+       },
+       "priority": {
+        "type": "integer",
+        "minimum": -1000000,
+        "maximum": 1000000,
+        "description": "Placement priority; higher values win after route and language specificity. Use 0 unless explicit ordering is needed."
+       },
+       "order": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000000,
+        "description": "Stable project order; lower values win final ties. Use 0 for a single Study."
+       }
+      },
+      "required": [
+       "version",
+       "enabled"
+      ],
+      "description": "Visibility v1 object, or null to inherit enabled placement on all pages and supported languages. enabled:false opts out. Ranking applies exclusions, route specificity, language specificity, higher priority, then lower project order. Example: {\"version\":1,\"enabled\":true,\"rules\":[{\"effect\":\"include\",\"match\":\"subtree\",\"pathname\":\"/docs\"}],\"languages\":[\"en\"],\"priority\":0,\"order\":0}.",
+      "examples": [
+       {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+         {
+          "effect": "include",
+          "match": "subtree",
+          "pathname": "/docs"
+         }
+        ],
+        "languages": [
+         "en"
+        ],
+        "priority": 0,
+        "order": 0
+       },
+       null
+      ]
+     },
+     "allowedOrigins": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 2000,
+       "format": "uri",
+       "pattern": "^https?://"
+      },
+      "maxItems": 20,
+      "uniqueItems": true,
+      "description": "Customer origins where the install-once Project widget runs. Use origins only, without a path, query, or fragment. A direct-link Invitation uses the first origin to build its shareable campaign URL; [] clears the list and revokes URL publication. Example: [\"https://app.example.com\"].",
+      "examples": [
+       [
+        "https://app.example.com"
+       ],
+       []
+      ]
+     }
+    },
+    "required": [
+     "projectRef",
+     "title",
+     "script"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Create a user interview or usability test",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "studies_update",
+   "title": "Edit, start, or pause an interview study",
+   "description": "Changes an existing Study's questions, invitations, page placement, or collection status. Overwrites supplied settings and can publish or revoke recruitment links. Status changes also update a linked Intake. status=\"active\" starts collection; \"paused\" or \"closed\" stops new interviews without interrupting one in progress. Supply at least one change and validate revised scripts first. Uses the existing project widget; no per-study install is needed.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 500,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     },
+     "studyRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Study handle within the selected project, as returned by studies.list."
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "draft",
+       "active",
+       "paused",
+       "closed"
+      ],
+      "examples": [
+       "paused"
+      ],
+      "description": "Lifecycle status: draft is not collecting, active starts collection, paused temporarily disables new interviews, and closed finishes the current collection cycle while allowing an interview already in progress to finish. paused and closed can both return to active. Example: use \"paused\" for a temporary stop.",
+      "maxLength": 2000
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "New participant- and reviewer-facing title"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "New description"
+     },
+     "script": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 5,
+      "properties": {
+       "version": {
+        "type": "integer",
+        "enum": [
+         2
+        ],
+        "description": "Study script contract version; use 2."
+       },
+       "segments": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 100,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "maxProperties": 15,
+         "properties": {
+          "id": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 100,
+           "description": "Stable segment identifier. Example: \"opening\"."
+          },
+          "title": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 300,
+           "description": "Short reviewer-facing segment title."
+          },
+          "mode": {
+           "type": "string",
+           "enum": [
+            "talk",
+            "speak",
+            "observe"
+           ],
+           "maxLength": 7,
+           "description": "Segment behavior: talk conducts an interview, speak delivers fixed copy, and observe watches a participant task."
+          },
+          "experimental_capabilities": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 7,
+           "properties": {
+            "realtime_analysis": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_analysis capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_page_context": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_page_context capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_site_search": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_site_search capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_knowledge_query": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_knowledge_query capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_visual_snapshots": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_visual_snapshots capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_visual_guidance": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_visual_guidance capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            },
+            "realtime_same_origin_navigation": {
+             "type": "boolean",
+             "description": "Request the experimental realtime_same_origin_navigation capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+            }
+           },
+           "description": "Optional experimental runtime capability overrides. Omit for the stable default behavior."
+          },
+          "instruction": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Instruction for talk or observe behavior. An observe segment requires instruction or conductor_context."
+          },
+          "conductor_context": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Additional private context for the interviewer or observer. An observe segment requires this or instruction."
+          },
+          "speak_text": {
+           "type": "string",
+           "maxLength": 20000,
+           "description": "Exact text delivered by a speak segment; required when mode is speak."
+          },
+          "speak_submode": {
+           "type": "string",
+           "enum": [
+            "speak_fast",
+            "speak_balanced",
+            "speak_rich"
+           ],
+           "maxLength": 14,
+           "description": "Speech delivery profile: fast, balanced, or rich. Applies to speak segments."
+          },
+          "speak_interruptible": {
+           "type": "boolean",
+           "description": "Whether the participant may interrupt a speak segment."
+          },
+          "talk": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 4,
+           "description": "Optional configuration for a talk segment.",
+           "properties": {
+            "research_mode": {
+             "type": "string",
+             "enum": [
+              "discovery",
+              "jtbd_switch",
+              "usability_debrief",
+              "concept_reaction"
+             ],
+             "maxLength": 20,
+             "description": "Interview strategy: discovery, jtbd_switch, usability_debrief, or concept_reaction."
+            },
+            "system_prompt": {
+             "type": "string",
+             "maxLength": 20000,
+             "description": "Optional segment-specific interviewer instructions appended to the Study defaults."
+            },
+            "tools": {
+             "type": "array",
+             "maxItems": 20,
+             "items": {
+              "oneOf": [
+               {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 4,
+                "properties": {
+                 "type": {
+                  "type": "string",
+                  "enum": [
+                   "function"
+                  ],
+                  "maxLength": 8,
+                  "description": "Tool kind; use \"function\" or omit it for an inline function tool."
+                 },
+                 "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Stable function name exposed to the interviewer model."
+                 },
+                 "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 20000,
+                  "description": "When and why the interviewer should call this function."
+                 },
+                 "parameters": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "maxProperties": 4,
+                  "description": "Object-shaped function parameters.",
+                  "properties": {
+                   "type": {
+                    "type": "string",
+                    "enum": [
+                     "object"
+                    ],
+                    "maxLength": 6,
+                    "description": "Parameter container type; use \"object\"."
+                   },
+                   "properties": {
+                    "type": "object",
+                    "maxProperties": 50,
+                    "propertyNames": {
+                     "type": "string",
+                     "minLength": 1,
+                     "maxLength": 100
+                    },
+                    "additionalProperties": {
+                     "type": "object",
+                     "additionalProperties": false,
+                     "maxProperties": 3,
+                     "properties": {
+                      "type": {
+                       "type": "string",
+                       "minLength": 1,
+                       "maxLength": 40,
+                       "description": "JSON value type expected by this function parameter, for example \"string\" or \"number\"."
+                      },
+                      "description": {
+                       "type": "string",
+                       "maxLength": 20000,
+                       "description": "Plain-language guidance for the model when supplying this parameter."
+                      },
+                      "enum": {
+                       "type": "array",
+                       "maxItems": 50,
+                       "uniqueItems": true,
+                       "items": {
+                        "type": "string",
+                        "maxLength": 300
+                       },
+                       "description": "Optional fixed string values accepted by this parameter."
+                      }
+                     },
+                     "required": [
+                      "type"
+                     ]
+                    },
+                    "description": "Map of parameter names to their schemas."
+                   },
+                   "required": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "uniqueItems": true,
+                    "items": {
+                     "type": "string",
+                     "minLength": 1,
+                     "maxLength": 100
+                    },
+                    "description": "Names of parameters that must be supplied."
+                   }
+                  },
+                  "required": [
+                   "type",
+                   "properties"
+                  ]
+                 }
+                },
+                "required": [
+                 "name",
+                 "description",
+                 "parameters"
+                ],
+                "description": "Inline function available to the interviewer during this talk segment."
+               },
+               {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 7,
+                "properties": {
+                 "type": {
+                  "type": "string",
+                  "enum": [
+                   "mcp"
+                  ],
+                  "maxLength": 3,
+                  "description": "Tool kind; use \"mcp\" for a remote server or connected connector."
+                 },
+                 "server_label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Stable label used to identify this MCP server in the interview."
+                 },
+                 "server_url": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2048,
+                  "pattern": "^https://",
+                  "description": "Remote MCP server HTTPS URL. Provide exactly one of server_url or connector_id."
+                 },
+                 "connector_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100,
+                  "description": "Connected MCP connector identifier. Provide exactly one of connector_id or server_url."
+                 },
+                 "allowed_tools": {
+                  "type": "array",
+                  "maxItems": 50,
+                  "uniqueItems": true,
+                  "items": {
+                   "type": "string",
+                   "minLength": 1,
+                   "maxLength": 100
+                  },
+                  "description": "Optional allowlist of tool names exposed from this MCP server."
+                 },
+                 "require_approval": {
+                  "type": "string",
+                  "enum": [
+                   "never",
+                   "always"
+                  ],
+                  "maxLength": 6,
+                  "description": "Whether every MCP call requires participant approval: never or always."
+                 },
+                 "server_description": {
+                  "type": "string",
+                  "maxLength": 20000,
+                  "description": "Optional guidance explaining when the interviewer should use this MCP server."
+                 }
+                },
+                "required": [
+                 "type",
+                 "server_label"
+                ],
+                "description": "Remote MCP server or connected connector available during this talk segment."
+               }
+              ],
+              "description": "One interviewer tool: either an inline function or an MCP server connection."
+             },
+             "description": "Optional functions or MCP connections available in this talk segment."
+            },
+            "goals": {
+             "type": "array",
+             "maxItems": 50,
+             "uniqueItems": true,
+             "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+             },
+             "description": "Goal ids from the top-level goals array assigned to this talk segment."
+            }
+           }
+          },
+          "realtime_navigation": {
+           "type": "object",
+           "additionalProperties": false,
+           "maxProperties": 1,
+           "description": "Same-origin navigation bounds for a talk segment with realtime_same_origin_navigation enabled.",
+           "properties": {
+            "allowed_paths": {
+             "type": "array",
+             "maxItems": 50,
+             "uniqueItems": true,
+             "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+             },
+             "description": "Allowed same-origin pathname prefixes, each beginning with /. Example: [\"/docs\", \"/settings\"]."
+            }
+           }
+          },
+          "advance_when": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "description": "Plain-language condition that tells the conductor when this segment is complete."
+          },
+          "max_duration_s": {
+           "type": "number",
+           "minimum": 1,
+           "maximum": 86400,
+           "description": "Maximum segment duration in seconds."
+          },
+          "host_actions_on_enter": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "maxProperties": 5,
+            "properties": {
+             "type": {
+              "type": "string",
+              "enum": [
+               "highlight",
+               "navigate",
+               "scroll_to"
+              ],
+              "maxLength": 10,
+              "description": "Host action: highlight or scroll_to a selector, or navigate to a URL."
+             },
+             "selector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "description": "Required CSS selector for highlight and scroll_to."
+             },
+             "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Required destination URL for navigate."
+             },
+             "label": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "Optional human-readable action label."
+             },
+             "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000,
+              "description": "Optional highlight or scroll duration in milliseconds."
+             }
+            },
+            "required": [
+             "type"
+            ],
+            "description": "Action for the host product to perform when entering or leaving a segment."
+           },
+           "description": "Optional host-product actions performed when the segment begins."
+          },
+          "host_actions_on_exit": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "maxProperties": 5,
+            "properties": {
+             "type": {
+              "type": "string",
+              "enum": [
+               "highlight",
+               "navigate",
+               "scroll_to"
+              ],
+              "maxLength": 10,
+              "description": "Host action: highlight or scroll_to a selector, or navigate to a URL."
+             },
+             "selector": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300,
+              "description": "Required CSS selector for highlight and scroll_to."
+             },
+             "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Required destination URL for navigate."
+             },
+             "label": {
+              "type": "string",
+              "maxLength": 300,
+              "description": "Optional human-readable action label."
+             },
+             "duration_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 60000,
+              "description": "Optional highlight or scroll duration in milliseconds."
+             }
+            },
+            "required": [
+             "type"
+            ],
+            "description": "Action for the host product to perform when entering or leaving a segment."
+           },
+           "description": "Optional host-product actions performed when the segment ends."
+          }
+         },
+         "required": [
+          "id",
+          "title",
+          "mode"
+         ],
+         "description": "One ordered interview segment. Minimal talk segment: {\"id\":\"opening\",\"title\":\"Understand the problem\",\"mode\":\"talk\",\"instruction\":\"Ask what the participant was trying to accomplish.\"}."
+        },
+        "description": "Ordered interview flow containing at least one talk, speak, or observe segment."
+       },
+       "goals": {
+        "type": "array",
+        "maxItems": 50,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "maxProperties": 2,
+         "properties": {
+          "id": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 100,
+           "description": "Stable goal identifier referenced by talk.goals. Example: \"understand_blocker\"."
+          },
+          "description": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "description": "What the interviewer should learn, written as a concrete research objective."
+          }
+         },
+         "required": [
+          "id",
+          "description"
+         ],
+         "description": "One reusable research goal with a stable id and an interviewer-facing description."
+        },
+        "description": "Reusable research goals. Use [] when the minimal script has no separately tracked goals."
+       },
+       "experimental_capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 7,
+        "properties": {
+         "realtime_analysis": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_analysis capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_page_context": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_page_context capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_site_search": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_site_search capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_knowledge_query": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_knowledge_query capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_visual_snapshots": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_visual_snapshots capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_visual_guidance": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_visual_guidance capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         },
+         "realtime_same_origin_navigation": {
+          "type": "boolean",
+          "description": "Request the experimental realtime_same_origin_navigation capability. true is an opt-in request, still subject to service availability; omit unless the Study explicitly needs it."
+         }
+        },
+        "description": "Optional experimental runtime capability overrides. Omit for the stable default behavior."
+       },
+       "defaults": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 4,
+        "description": "Optional defaults inherited by segments unless overridden.",
+        "properties": {
+         "voice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Default GPT-Live-1 voice identifier for Talk segments."
+         },
+         "system_prompt": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Default interviewer instructions shared by talk segments."
+         },
+         "speak_submode": {
+          "type": "string",
+          "enum": [
+           "speak_fast",
+           "speak_balanced",
+           "speak_rich"
+          ],
+          "maxLength": 14,
+          "description": "Default speech delivery profile for speak segments."
+         },
+         "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 35,
+          "description": "Default BCP 47 interview language, for example \"en\" or \"de\"."
+         }
+        }
+       }
+      },
+      "required": [
+       "version",
+       "segments",
+       "goals"
+      ],
+      "description": "Complete StudyScriptV2 interview flow. Serialized JSON must be 250000 characters or fewer. Minimal example: {\"version\":2,\"segments\":[{\"id\":\"opening\",\"title\":\"Understand the problem\",\"mode\":\"talk\",\"instruction\":\"Ask what the participant was trying to accomplish.\"}],\"goals\":[]}.",
+      "examples": [
+       {
+        "version": 2,
+        "segments": [
+         {
+          "id": "opening",
+          "title": "Understand the problem",
+          "mode": "talk",
+          "instruction": "Ask what the participant was trying to accomplish."
+         }
+        ],
+        "goals": []
+       }
+      ]
+     },
+     "goals": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "maxProperties": 2,
+       "properties": {
+        "id": {
+         "type": "string",
+         "minLength": 1,
+         "maxLength": 100,
+         "description": "Stable goal identifier referenced by talk.goals. Example: \"understand_blocker\"."
+        },
+        "description": {
+         "type": "string",
+         "minLength": 1,
+         "maxLength": 2000,
+         "description": "What the interviewer should learn, written as a concrete research objective."
+        }
+       },
+       "required": [
+        "id",
+        "description"
+       ],
+       "description": "One reusable research goal with a stable id and an interviewer-facing description."
+      },
+      "maxItems": 50,
+      "description": "Replacement study-level goal metadata; use the same goal shape as script.goals."
+     },
+     "intakeRef": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Intake handle returned by studies.get to attach, or empty string to detach."
+     },
+     "invitation": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "launcher": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Compact button that opens the Study Invitation.",
+        "properties": {
+         "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Short participant-facing button label. Example: \"Share feedback\"."
+         },
+         "icon": {
+          "type": "string",
+          "enum": [
+           "feedback",
+           "mic",
+           "diagram",
+           "bug",
+           "research"
+          ],
+          "description": "Launcher glyph: mic for a voice interview, feedback for general feedback, diagram for evidence, bug for defect reporting. research is a magnifying glass and reads as a search box next to a label.",
+          "maxLength": 2000
+         },
+         "style": {
+          "type": "string",
+          "enum": [
+           "calm",
+           "lattice",
+           "beam",
+           "ticket"
+          ],
+          "description": "Launcher treatment. calm is flat with nothing in motion; lattice carries a field of nodes with one travelling signal; beam runs a hairline around the edge; ticket adds a perforated stub printing panel.duration_minutes. Defaults to lattice.",
+          "maxLength": 2000
+         },
+         "shape": {
+          "type": "string",
+          "enum": [
+           "capsule",
+           "rounded",
+           "square"
+          ],
+          "description": "Launcher corner radius: capsule, rounded, or square. Defaults to capsule.",
+          "maxLength": 2000
+         }
+        },
+        "required": [
+         "label",
+         "icon"
+        ]
+       },
+       "panel": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Expanded invitation panel. Required when presentation_mode is contextual or direct_link; optional for passive.",
+        "properties": {
+         "eyebrow": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Optional short label above the headline."
+         },
+         "headline": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Primary participant-facing invitation headline."
+         },
+         "body": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600,
+          "description": "Optional supporting invitation copy."
+         },
+         "duration_minutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 240,
+          "description": "Expected interview duration in minutes."
+         },
+         "cta": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "description": "Call-to-action label that starts the interview. Example: \"Start interview\"."
+         },
+         "reward": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional single reward promise shown to participants.",
+          "properties": {
+           "kind": {
+            "type": "string",
+            "enum": [
+             "gift",
+             "product",
+             "community",
+             "access"
+            ],
+            "description": "Reward kind: gift, product, community benefit, or access.",
+            "maxLength": 2000
+           },
+           "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Participant-facing reward label."
+           },
+           "eligibility": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "Optional eligibility condition for receiving the reward."
+           },
+           "delivery": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "description": "Optional explanation of how or when the reward is delivered."
+           }
+          },
+          "required": [
+           "kind",
+           "label"
+          ]
+         },
+         "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional HTTPS image shown in the expanded panel.",
+          "properties": {
+           "asset_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "description": "Stable identifier for the referenced image asset."
+           },
+           "url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2000,
+            "pattern": "^https://",
+            "description": "Absolute HTTPS URL for the image."
+           },
+           "alt": {
+            "type": "string",
+            "maxLength": 160,
+            "description": "Accessible alternative text; use an empty string only for a decorative image."
+           }
+          },
+          "required": [
+           "asset_id",
+           "url",
+           "alt"
+          ]
+         }
+        },
+        "required": [
+         "headline",
+         "cta"
+        ]
+       },
+       "presentation_mode": {
+        "type": "string",
+        "enum": [
+         "passive",
+         "contextual",
+         "direct_link"
+        ],
+        "description": "How participants encounter the Invitation: passive launcher, contextual panel, or shareable direct link. contextual and direct_link require panel.",
+        "maxLength": 2000
+       },
+       "brand_color": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Six-digit hexadecimal brand colors used by the Invitation.",
+        "properties": {
+         "light": {
+          "type": "string",
+          "maxLength": 7,
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Required light-theme color, for example \"#2563eb\"."
+         },
+         "dark": {
+          "type": "string",
+          "maxLength": 7,
+          "pattern": "^#[0-9a-fA-F]{6}$",
+          "description": "Optional dark-theme color, for example \"#60a5fa\"."
+         }
+        },
+        "required": [
+         "light"
+        ]
+       },
+       "foreground_color": {
+        "type": "string",
+        "maxLength": 7,
+        "pattern": "^#[0-9a-fA-F]{6}$",
+        "description": "Optional launcher and Invitation foreground color, for example \"#ffffff\". Omit it to choose black or white automatically for each brand color."
+       },
+       "placement": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Screen corner used for the launcher on desktop and mobile.",
+        "properties": {
+         "desktop": {
+          "type": "string",
+          "enum": [
+           "bottom-left",
+           "bottom-right"
+          ],
+          "description": "Desktop launcher corner.",
+          "maxLength": 2000
+         },
+         "mobile": {
+          "type": "string",
+          "enum": [
+           "bottom-left",
+           "bottom-right"
+          ],
+          "description": "Mobile launcher corner.",
+          "maxLength": 2000
+         }
+        },
+        "required": [
+         "desktop",
+         "mobile"
+        ]
+       }
+      },
+      "required": [
+       "launcher",
+       "presentation_mode",
+       "brand_color",
+       "placement"
+      ],
+      "description": "Participant-facing launcher configuration, or null to inherit the built-in compact launcher. Minimal passive example: {\"launcher\":{\"label\":\"Share feedback\",\"icon\":\"research\"},\"presentation_mode\":\"passive\",\"brand_color\":{\"light\":\"#2563eb\"},\"placement\":{\"desktop\":\"bottom-right\",\"mobile\":\"bottom-right\"}}.",
+      "examples": [
+       {
+        "launcher": {
+         "label": "Share feedback",
+         "icon": "mic"
+        },
+        "presentation_mode": "passive",
+        "brand_color": {
+         "light": "#2563eb"
+        },
+        "placement": {
+         "desktop": "bottom-right",
+         "mobile": "bottom-right"
+        }
+       },
+       null
+      ]
+     },
+     "visibility": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+       "version": {
+        "type": "integer",
+        "enum": [
+         1
+        ],
+        "description": "Visibility contract version; use 1."
+       },
+       "enabled": {
+        "type": "boolean",
+        "description": "Whether this Study participates in automatic placement. false disables it without changing lifecycle status."
+       },
+       "rules": {
+        "type": "array",
+        "maxItems": 100,
+        "description": "Optional ordered page rules. Exclusions win before the most specific matching inclusion.",
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "properties": {
+          "effect": {
+           "type": "string",
+           "enum": [
+            "include",
+            "exclude"
+           ],
+           "description": "Whether a matching pathname is eligible or blocked.",
+           "maxLength": 2000
+          },
+          "match": {
+           "type": "string",
+           "enum": [
+            "exact",
+            "subtree"
+           ],
+           "description": "exact matches one pathname; subtree also matches descendants.",
+           "maxLength": 2000
+          },
+          "pathname": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000,
+           "pattern": "^/(?!/)(?!.*//)(?!.*[?#\\\\])(?=[\\x21-\\x7E]*$)(?!.*[\"<>^`{}])(?!(?:.*\\/)?(?:\\.|%2[eE]){1,2}(?:\\/|$))(?:$|.*[^/])$",
+           "description": "Absolute pathname beginning with /. Do not include origin, query, or fragment. Example: \"/docs\"."
+          }
+         },
+         "required": [
+          "effect",
+          "match",
+          "pathname"
+         ]
+        }
+       },
+       "languages": {
+        "type": "array",
+        "maxItems": 20,
+        "description": "Optional supported widget-language allowlist.",
+        "items": {
+         "type": "string",
+         "enum": [
+          "en",
+          "es",
+          "ru",
+          "fr",
+          "de",
+          "zh-Hans",
+          "ja"
+         ],
+         "description": "Supported widget language code.",
+         "maxLength": 2000
+        }
+       },
+       "priority": {
+        "type": "integer",
+        "minimum": -1000000,
+        "maximum": 1000000,
+        "description": "Placement priority; higher values win after route and language specificity. Use 0 unless explicit ordering is needed."
+       },
+       "order": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1000000,
+        "description": "Stable project order; lower values win final ties. Use 0 for a single Study."
+       }
+      },
+      "required": [
+       "version",
+       "enabled"
+      ],
+      "description": "Visibility v1 object, or null to inherit enabled placement on all pages and supported languages. enabled:false opts out. Ranking applies exclusions, route specificity, language specificity, higher priority, then lower project order. Example: {\"version\":1,\"enabled\":true,\"rules\":[{\"effect\":\"include\",\"match\":\"subtree\",\"pathname\":\"/docs\"}],\"languages\":[\"en\"],\"priority\":0,\"order\":0}.",
+      "examples": [
+       {
+        "version": 1,
+        "enabled": true,
+        "rules": [
+         {
+          "effect": "include",
+          "match": "subtree",
+          "pathname": "/docs"
+         }
+        ],
+        "languages": [
+         "en"
+        ],
+        "priority": 0,
+        "order": 0
+       },
+       null
+      ]
+     },
+     "allowedOrigins": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 2000,
+       "format": "uri",
+       "pattern": "^https?://"
+      },
+      "maxItems": 20,
+      "uniqueItems": true,
+      "description": "Customer origins where the install-once Project widget runs. Use origins only, without a path, query, or fragment. A direct-link Invitation uses the first origin to build its shareable campaign URL; [] clears the list and revokes URL publication. Example: [\"https://app.example.com\"].",
+      "examples": [
+       [
+        "https://app.example.com"
+       ],
+       []
+      ]
+     }
+    },
+    "required": [
+     "projectRef",
+     "studyRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Edit, start, or pause an interview study",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "evidence_list",
+   "title": "Find user problems, quotes, and workarounds",
+   "description": "Searches interview Evidence for user problems, needs, workarounds, or successful experiences. Returns paginated quotes, observations, and source references for review or grouping into Findings. Defaults to product_under_test; target_surface=\"all\" includes other areas.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "signal_type": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "examples": [
+       "struggling_moment"
+      ],
+      "description": "Filter by evidence type. Canonical generated values: struggling_moment, desired_outcome, workaround, hiring_criteria, firing_moment, emotional_response, no_issue_found, smooth_completion, critical_error, recovery_success, decision_point. Historical or reviewer-authored Evidence may use another value; copy signal_type from an evidence.list result when filtering those records. Example: signal_type=\"struggling_moment\"."
+     },
+     "target_surface": {
+      "type": "string",
+      "enum": [
+       "product_under_test",
+       "usertold_widget_interview",
+       "interviewer_conductor_behavior",
+       "ambiguous_needs_review",
+       "all"
+      ],
+      "description": "Filter by area (product_under_test, usertold_widget_interview, interviewer_conductor_behavior, ambiguous_needs_review, or all)",
+      "maxLength": 2000
+     },
+     "interviewRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Filter by an interviewRef returned by interviews.list"
+     },
+     "studyRef": {
+      "type": "string",
+      "description": "Filter by a studyRef returned by studies.list.",
+      "maxLength": 2000
+     },
+     "findingRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Filter by a findingRef returned by findings.list, or \"none\" for unlinked Evidence"
+     },
+     "min_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Minimum confidence threshold (0-1)"
+     },
+     "search": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Search quote, observed behavior, generated summary, and interpretation text"
+     },
+     "dismissed": {
+      "type": "boolean",
+      "description": "Filter by dismissed status"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Maximum results (default and max 5); use offset for the next page"
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Pagination offset"
+     }
+    },
+    "required": [
+     "projectRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Find user problems, quotes, and workarounds",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "evidence_get",
+   "title": "Inspect a user quote or observed problem",
+   "description": "Returns one Evidence observation with its quote, observed behavior, interpretation, source interview and timestamp, page context, review state, and linked Findings. interviews.get_context provides the surrounding moment.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "signalId": {
+      "type": "string",
+      "description": "Evidence reference returned by evidence.list or studies.get_results.",
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "projectRef",
+     "signalId"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Inspect a user quote or observed problem",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "evidence_update",
+   "title": "Annotate, dismiss, or restore interview evidence",
+   "description": "Replaces or clears an Evidence annotation, dismisses it with a reason, or restores it with dismissed=false. Returns the updated Evidence. Changes private UserTold review state and recalculates linked Findings when dismissal changes.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "signalId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Evidence reference returned by evidence.list or studies.get_results."
+     },
+     "annotation": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "Replacement annotation text, or null to clear it explicitly"
+     },
+     "dismissed": {
+      "type": "boolean",
+      "description": "Set true to dismiss this Evidence or false to restore it"
+     },
+     "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Required reason when dismissed=true; omitted when restoring"
+     }
+    },
+    "required": [
+     "projectRef",
+     "signalId"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Annotate, dismiss, or restore interview evidence",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "findings_list",
+   "title": "Find product improvements supported by research",
+   "description": "Lists product problems and improvement opportunities collected from interviews. Returns paginated Findings with priority and supporting Interview/Evidence counts. Closed Findings are hidden by default; findings.get_evidence returns their sources.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "backlog",
+       "ready",
+       "in_progress",
+       "done",
+       "wont_fix"
+      ],
+      "description": "Filter by status: backlog, ready, in_progress, done, wont_fix",
+      "maxLength": 2000
+     },
+     "target_surface": {
+      "type": "string",
+      "enum": [
+       "product_under_test",
+       "usertold_widget_interview",
+       "interviewer_conductor_behavior",
+       "ambiguous_needs_review",
+       "all"
+      ],
+      "description": "Filter by area (product_under_test, usertold_widget_interview, interviewer_conductor_behavior, ambiguous_needs_review, or all)",
+      "maxLength": 2000
+     },
+     "min_priority": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Minimum priority score (0-100)"
+     },
+     "include_closed": {
+      "type": "boolean",
+      "description": "Include closed done/wont_fix Findings"
+     },
+     "search": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Case-insensitive search across Finding title and description"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Maximum results (default and max 10); use offset for the next page"
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Pagination offset"
+     },
+     "enriched": {
+      "type": "boolean",
+      "description": "Include signal_types[] and studyRefs[] per Finding"
+     }
+    },
+    "required": [
+     "projectRef"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Find product improvements supported by research",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "findings_get_evidence",
+   "title": "Check the research behind a product finding",
+   "description": "Returns a Finding's linked Evidence, Interview timestamps, uncertainty, related Findings, possible recurrence, and decision summary. Check truncation flags before editing, planning follow-up research, defining acceptance criteria, or sending it externally.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "findingRef": {
+      "type": "string",
+      "description": "Finding reference returned by findings.list or findings.create_from_evidence",
+      "maxLength": 2000
+     },
+     "evidenceLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3,
+      "description": "Maximum linked Evidence items (default and max 3)"
+     }
+    },
+    "required": [
+     "projectRef",
+     "findingRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Check the research behind a product finding",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "findings_create_from_evidence",
+   "title": "Group interview evidence into a product finding",
+   "description": "Creates a private backlog Finding from reviewed Evidence and calculates priority. Moves selected Evidence out of other active Findings while preserving link history. Mark it ready only after source review. Does not create a GitHub or Linear issue.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Finding title"
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Optional Finding description"
+     },
+     "signalIds": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 100
+      },
+      "minItems": 1,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "description": "Evidence references returned by evidence.list or studies.get_results to link to this Finding."
+     }
+    },
+    "required": [
+     "projectRef",
+     "title",
+     "signalIds"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Group interview evidence into a product finding",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "findings_update",
+   "title": "Edit or mark a product finding reviewed",
+   "description": "Overwrites supplied Finding fields and can attach or detach Evidence. Attaching Evidence moves it out of other active Findings while preserving link history. Set status=\"ready\" only after checking sources, grouping, product relevance, and uncertainty. Changes UserTold only; findings.send is the separate GitHub or Linear handoff.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "findingRef": {
+      "type": "string",
+      "description": "Finding reference returned by findings.list or findings.create_from_evidence.",
+      "maxLength": 2000
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "backlog",
+       "ready",
+       "in_progress",
+       "done",
+       "wont_fix"
+      ],
+      "description": "Finding status. Setting ready explicitly records Review; it never writes to a provider.",
+      "maxLength": 2000
+     },
+     "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300,
+      "description": "Replacement Finding title. Maximum 300 characters."
+     },
+     "description": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Replacement Finding description. Maximum 2,000 characters."
+     },
+     "effort_estimate": {
+      "type": "string",
+      "enum": [
+       "xs",
+       "s",
+       "m",
+       "l",
+       "xl"
+      ],
+      "description": "Effort estimate: xs = extra small, s = small, m = medium, l = large, xl = extra large. Example: use \"m\" for medium effort.",
+      "maxLength": 2000
+     },
+     "addEvidenceRefs": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 500
+      },
+      "minItems": 1,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "description": "Evidence references returned by evidence.list or studies.get_results to attach to this Finding."
+     },
+     "removeEvidenceRefs": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 500
+      },
+      "minItems": 1,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "description": "Evidence references returned by evidence.list or studies.get_results to detach from this Finding."
+     }
+    },
+    "required": [
+     "projectRef",
+     "findingRef"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Edit or mark a product finding reviewed",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "interviews_list",
+   "title": "Find recorded user interviews",
+   "description": "Lists recorded participant Interviews for review, download, or processing checks. A projectRef is sufficient. Returns paginated summaries and interviewRef values for context, artifact, and processing tools. Supports Study and Interview status filters and omits participant identity fields.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "studyRef": {
+      "type": "string",
+      "description": "Filter by a studyRef returned by studies.list.",
+      "maxLength": 2000
+     },
+     "status": {
+      "type": "string",
+      "enum": [
+       "pending",
+       "active",
+       "completed",
+       "abandoned",
+       "error"
+      ],
+      "description": "Filter by interview status",
+      "maxLength": 2000
+     },
+     "processing_status": {
+      "type": "string",
+      "enum": [
+       "failed",
+       "done"
+      ],
+      "description": "Filter by analysis processing status",
+      "maxLength": 2000
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Maximum results (default and max 10)"
+     },
+     "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "Pagination offset"
+     }
+    },
+    "required": [
+     "projectRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Find recorded user interviews",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "interviews_get_context",
+   "title": "Inspect what happened around an interview moment",
+   "description": "Returns a limited transcript window and sanitized navigation/click events around timestamp_ms. Check truncation flags; interviews.get_artifacts provides the complete transcript and recordings.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "interviewRef": {
+      "type": "string",
+      "description": "Interview reference returned by interviews.list",
+      "maxLength": 2000
+     },
+     "timestamp_ms": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Center of the time window in milliseconds"
+     },
+     "window_seconds": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 600,
+      "description": "Half-width of the window in seconds (default 60, max 600)"
+     }
+    },
+    "required": [
+     "projectRef",
+     "interviewRef",
+     "timestamp_ms"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Inspect what happened around an interview moment",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "interviews_get_artifacts",
+   "title": "Download interview transcripts and recordings",
+   "description": "Returns availability and resource links for a complete Interview transcript, audio, screen recording, and activity events, not file contents. Download transcript_text once for the exact transcript. Links expire after five minutes. Original captured content remains unchanged.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "interviewRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Interview reference returned by interviews.list or studies.get_results."
+     }
+    },
+    "required": [
+     "projectRef",
+     "interviewRef"
+    ],
+    "additionalProperties": false,
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Download interview transcripts and recordings",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "interviews_processing_status",
+   "title": "Check interview analysis progress",
+   "description": "Returns saved Interview processing and Evidence extraction status with result counts. Does not start processing; interviews.retry_processing starts a new attempt only for an eligible failure or stall.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "interviewRef": {
+      "type": "string",
+      "description": "Interview reference returned by interviews.list",
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "projectRef",
+     "interviewRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Check interview analysis progress",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "interviews_retry_processing",
+   "title": "Retry failed interview analysis",
+   "description": "Starts a new processing attempt after interviews.processing_status shows a durable failure or no progress for 24 hours. Replaces generated Evidence and preserves manual Evidence. Completion can email the owner according to their notification preferences. If the outcome is uncertain, check status and do not retry automatically.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "interviewRef": {
+      "type": "string",
+      "description": "Interview reference returned by interviews.list",
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "projectRef",
+     "interviewRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Retry failed interview analysis",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "findings_send",
+   "title": "Send a researched product issue to GitHub or Linear",
+   "description": "Sends an authorized reviewed Finding with linked Evidence to GitHub or Linear. Creates and returns an external issue, or returns the previously recorded issue. Omit provider for the configured destination; pass \"github\" or \"linear\" only as an explicit override. The issue cannot be recalled.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "description": "Canonical project reference in org/project format, as returned by projects.list.",
+      "maxLength": 2000
+     },
+     "findingRef": {
+      "type": "string",
+      "description": "Reviewed Finding reference returned by findings.list or findings.create_from_evidence",
+      "maxLength": 2000
+     },
+     "provider": {
+      "type": "string",
+      "enum": [
+       "github",
+       "linear"
+      ],
+      "description": "Optional delivery override. Omit it to use the server-selected destination.",
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "projectRef",
+     "findingRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false
+   },
+   "annotations": {
+    "title": "Send a researched product issue to GitHub or Linear",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "recordings_create_invitation",
+   "title": "Invite a participant to record a website",
+   "description": "Creates a single-participant Chrome recording invitation in an existing project. Assigns the website and tasks, returns launchUrl and plain installation instructions. The participant needs no account; finishing automatically uploads to this project. Supply externalRef to make retries idempotent. Does not send invitations or make recordings public.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     },
+     "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+       "version": {
+        "type": "integer",
+        "const": 1
+       },
+       "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160
+       },
+       "targetUrl": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4000
+       },
+       "steps": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 30,
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "properties": {
+          "instruction": {
+           "type": "string",
+           "minLength": 1,
+           "maxLength": 2000
+          },
+          "url": {
+           "type": "string",
+           "maxLength": 4000
+          }
+         },
+         "required": [
+          "instruction"
+         ]
+        }
+       }
+      },
+      "required": [
+       "version",
+       "title",
+       "targetUrl",
+       "steps"
+      ]
+     },
+     "externalRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "studyRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Filter by Study handle returned by studies.list."
+     },
+     "expiresInDays": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30
+     }
+    },
+    "required": [
+     "projectRef",
+     "plan"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Invite a participant to record a website",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "recordings_create_website_invitation",
+   "title": "Prepare a website feedback invitation",
+   "description": "Prepares feedback for a website in an authorized organization. Creates or reuses a private project for the complete website URL and returns a single-participant Chrome recording invitation. Default first-impression tasks are supplied when instructions are omitted. externalRef makes repeated assignment creation idempotent. The participant needs no UserTold account. Does not send invitations.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "organizationRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "externalRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "targetUrl": {
+      "type": "string",
+      "maxLength": 4000
+     },
+     "title": {
+      "type": "string",
+      "maxLength": 160
+     },
+     "instructions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 2000
+      }
+     },
+     "expiresInDays": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30
+     }
+    },
+    "required": [
+     "organizationRef",
+     "externalRef",
+     "targetUrl"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Prepare a website feedback invitation",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "recordings_get_results",
+   "title": "Get invited recording results",
+   "description": "Returns an assigned recording status, interview reference, private organizer URL, and any enabled viewing link. Poll this for a known invitationRef; completed means source upload is durable, while transcription and analysis may still be processing. Does not expose other participant recordings.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     },
+     "invitationRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     }
+    },
+    "required": [
+     "projectRef",
+     "invitationRef"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Get invited recording results",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "recordings_update_invitation",
+   "title": "Change recording invitation access",
+   "description": "Explicitly changes recording invitation access. revoke stops invitation use and future uploads and revokes its viewing link. share creates a 30-day viewing link to a completed recording that anyone holding the link can open or embed. unshare revokes future viewing-link access; already issued media URLs expire within five minutes. Sharing rotates the prior link. Does not delete an interview.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "projectRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Canonical project reference in org/project format, as returned by projects.list."
+     },
+     "invitationRef": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+     },
+     "action": {
+      "type": "string",
+      "enum": [
+       "revoke",
+       "share",
+       "unshare"
+      ],
+      "description": "revoke closes participant access; share enables or rotates a 30-day viewing link; unshare disables it.",
+      "maxLength": 2000
+     }
+    },
+    "required": [
+     "projectRef",
+     "invitationRef",
+     "action"
+    ],
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+   },
+   "annotations": {
+    "title": "Change recording invitation access",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  }
+ ]
+}

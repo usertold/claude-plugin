@@ -1,0 +1,1 @@
+{"url":"{{input.url}}","status":"pass","checks":[{"id":"loader_present","result":"pass"},{"id":"project_key_matches","result":"pass"},{"id":"csp","result":"pass"}],"note":"Checks deployed HTML only; does not run the widget or microphone/screen permissions."}

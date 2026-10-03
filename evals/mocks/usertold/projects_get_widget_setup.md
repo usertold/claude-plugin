@@ -1,0 +1,1 @@
+{"projectRef":"{{input.projectRef}}","snippet":"<script async src=\"https://usertold.ai/v1/widget.js\" data-project-key=\"ut_pub_8f3k2acme\"></script>","installOnce":true,"verification":null,"readiness":{"activeStudies":1,"note":"Install once in the shared layout; page and language rules select the active Study."}}

@@ -1,0 +1,1 @@
+{"interviewRef":"{{input.interviewRef}}","status":"failed","stage":"transcription","error":"audio_upload_incomplete","retryEligible":true,"evidenceCount":0,"note":"Recording upload was interrupted; transcript and Evidence are unavailable."}
