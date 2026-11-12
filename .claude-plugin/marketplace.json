@@ -1,0 +1,16 @@
+{
+  "name": "usertold",
+  "description": "The UserTold plugin for Claude Code.",
+  "owner": {
+    "name": "UserTold",
+    "email": "support@usertold.ai",
+    "url": "https://usertold.ai"
+  },
+  "plugins": [
+    {
+      "name": "usertold",
+      "source": "./",
+      "description": "Run user tests on your site that record what people do and say, then fix what gets in their way with Claude."
+    }
+  ]
+}

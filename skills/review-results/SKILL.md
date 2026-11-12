@@ -61,6 +61,8 @@ Creating or editing Findings changes only the user's UserTold workspace. Say wha
 
 `findings.send` creates a GitHub or Linear issue with the linked Evidence attached, and **it cannot be recalled**. Send only a reviewed Finding, only after the user explicitly says to send that Finding, and say where it will go. Use the project's configured destination unless the user names one.
 
+To turn a reviewed Finding into a code change, offer the `fix-from-findings` skill.
+
 `feedback.submit` is for problems with UserTold itself, never the user's product. Use it only with the user's permission, and leave out personal data and participant details.
 
 ## If there's nothing yet
