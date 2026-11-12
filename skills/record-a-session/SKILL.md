@@ -15,14 +15,14 @@ You need:
 
 - **Website**: the complete URL where the session starts, e.g. `https://example.com/pricing`.
 - **Tasks**: one to five short tasks in plain words that state the outcome, not the route ("Find a plan that fits a team of five", not "Click Pricing, then Teams"). If the user has none, UserTold supplies first-impression tasks.
-- **Who**: only so you can tell the user what to send. Don't pass the participant's name or email to UserTold.
+- **Who**: only so you can tell the user what to send. Keep the participant's name and email out of every UserTold call, including `title`, `externalRef`, and the task text; write "the participant" or "you" instead.
 
-Show the tasks before creating the link.
+If the user already said what the person should try, write the tasks from that and create the link right away; show the tasks with the link, since it can be revoked and nothing is sent. Ask first only when you can't tell what the person should do.
 
 ## 2. Create the link
 
-- **Existing project** (the site already has a UserTold project, from `projects.list`): call `recordings.create_invitation` with `projectRef` and a `plan` of `{"version": 1, "title": "...", "targetUrl": "...", "steps": [{"instruction": "..."}]}`. Pass a `studyRef` only if the user wants the session attached to a Study.
-- **Any other website**: call `organizations.list`, then `recordings.create_website_invitation` with `organizationRef`, `targetUrl`, an optional `title`, and optional `instructions` (an array of task strings). It creates or reuses a private project for that site.
+- **Existing project** (a project from `projects.list` clearly covers this website): call `recordings.create_invitation` with `projectRef` and a `plan` of `{"version": 1, "title": "...", "targetUrl": "...", "steps": [{"instruction": "..."}]}`. Pass a `studyRef` only if the user wants the session attached to a Study.
+- **Any other website, or when unsure**: call `organizations.list`, then `recordings.create_website_invitation` with `organizationRef`, `targetUrl`, an optional `title`, and optional `instructions` (an array of task strings). It creates or reuses a private project for that site.
 
 Always set `externalRef` to a stable value you choose for this person and page, such as `pricing-page-customer-1`. If a call fails or its result is unclear, retry with the same `externalRef` so no duplicate link is created. `expiresInDays` defaults to 7, up to 30.
 
