@@ -17,7 +17,7 @@ This plugin connects Claude to your UserTold account. It teaches Claude to plan 
 | **record-a-session** skill | Makes a recording link for one specific person, such as a friend or a customer, on any website. You decide who gets the link. |
 | **review-results** skill | Reads the recordings and transcripts before summaries, groups repeated problems into findings, and sends a finding to GitHub or Linear only when you ask. |
 | **fix-from-findings** skill | Takes a reviewed finding, reads the moments behind it, finds the code involved, and proposes a fix that you approve. |
-| **check-in** command | `/usertold:check-in` lists what is new since you last looked: finished tests, moments not yet grouped, processing failures, and findings ready to work on. |
+| **check-in** command | `/usertold:check-in` summarizes where things stand: finished sessions, moments not yet grouped, processing failures, and findings ready to work on. Repeated in the same conversation (for example with `/loop`), it reports what changed. |
 
 ## Getting started
 
