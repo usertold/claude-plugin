@@ -1,0 +1,1 @@
+{"invitation":{"id":"{{input.invitationRef}}","projectRef":"{{input.projectRef}}","externalRef":null,"launchUrl":"https://usertold.ai/r/{{input.invitationRef}}","instructions":"","expiresAt":"2026-11-19T12:00:00Z","revoked":false,"status":"invited","interviewRef":null,"interviewUrl":null,"viewUrl":null}}

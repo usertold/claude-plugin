@@ -1,0 +1,1 @@
+{"invitation":{"id":"{{input.invitationRef}}","projectRef":"{{input.projectRef}}","status":"completed","revoked":false,"viewUrl":"https://usertold.ai/v/shared-example","note":"Action {{input.action}} applied."}}
