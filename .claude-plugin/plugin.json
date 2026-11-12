@@ -11,7 +11,7 @@
   "homepage": "https://usertold.ai",
   "repository": "https://github.com/usertold/claude-plugin",
   "license": "MIT",
-  "keywords": ["user-testing", "usability-testing", "user-feedback", "session-recording", "ux-research", "product-feedback"],
+  "keywords": ["user-testing", "usability-testing", "user-feedback", "session-recording", "product-feedback"],
   "icon": "./assets/icon.png",
   "documentationUrl": "https://usertold.ai/docs/mcp",
   "supportUrl": "https://usertold.ai/support",
