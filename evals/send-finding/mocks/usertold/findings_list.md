@@ -1,0 +1,1 @@
+{"findings":[{"findingRef":"fnd_total","title":"Order total hidden until shipping is chosen","status":"ready","priority":71,"interviewCount":2,"evidenceCount":2},{"findingRef":"fnd_promo","title":"Promo code field not where people look","status":"backlog","priority":38,"interviewCount":1,"evidenceCount":1}],"count":2,"truncated":false}

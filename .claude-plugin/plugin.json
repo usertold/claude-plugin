@@ -1,17 +1,17 @@
 {
   "name": "usertold",
-  "displayName": "UserTold: AI User Research",
-  "version": "1.0.0",
-  "description": "Plan AI-led user interviews and usability tests, put them live on your website, and turn what participants said and did into reviewed, source-linked findings.",
+  "displayName": "UserTold",
+  "version": "1.1.0",
+  "description": "Run user tests on your site that record what people do and say, with an optional voice conversation. Claude plans the test, puts it live when you say so, and brings the moments where people got stuck back to you and your agents to fix.",
   "author": {
     "name": "UserTold",
     "email": "support@usertold.ai",
     "url": "https://usertold.ai"
   },
-  "homepage": "https://usertold.ai/docs/mcp",
+  "homepage": "https://usertold.ai",
   "repository": "https://github.com/usertold/claude-plugin",
   "license": "MIT",
-  "keywords": ["user-research", "user-interviews", "usability-testing", "customer-discovery", "ux-research", "product-feedback"],
+  "keywords": ["user-testing", "usability-testing", "user-feedback", "session-recording", "product-feedback"],
   "icon": "./assets/icon.png",
   "documentationUrl": "https://usertold.ai/docs/mcp",
   "supportUrl": "https://usertold.ai/support",

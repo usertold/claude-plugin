@@ -1,6 +1,6 @@
 ---
 name: launch-study
-description: Use when a UserTold study needs to reach participants — installing the UserTold widget on a website, checking that the install works, choosing where the invitation appears, sharing an interview link, or turning collection on, pausing it, or closing it. Also for "why isn't my study showing up?"
+description: Use when a UserTold study needs to reach participants — installing the UserTold widget on a website, checking that the install works, choosing where the invitation appears, sharing a test link, or turning collection on, pausing it, or closing it. Also for "why isn't my study showing up?"
 ---
 
 # Launch a UserTold study
@@ -19,9 +19,7 @@ Call `projects.list`, then `studies.list` for the project. If there is no Study 
 |-|-|
 | The participants use the user's website or web app | **Widget**: install once and the invitation appears on matching pages |
 | The participants can be emailed or messaged a link | **Direct link**: set `invitation.presentation_mode: "direct_link"` with `panel.headline` and `panel.cta`, and put the site's origin in `allowedOrigins`: the link is built from the first entry. This is the one case that needs an origin. `studies.get` then returns `recruitmentUrl`. It works only while the Study is active, and switching the mode revokes it |
-| One specific person should record a session on any website | **Recording invitation**: `recordings.create_invitation` (existing project) or `recordings.create_website_invitation` (any site). The participant installs a Chrome extension; no UserTold account needed. `create_website_invitation` needs an `organizationRef` and an `externalRef` you choose; reuse it on retry to avoid duplicates |
-
-Recording invitations are created, not sent. Hand the `launchUrl` to the user; they decide who receives it.
+| One specific person should record a session on any website | **Recording link**: use the `record-a-session` skill. It needs no widget install and no Study |
 
 ## 3. Install the widget (widget path)
 
@@ -50,12 +48,12 @@ Show the user the planned placement and copy before saving it with `studies.upda
 
 ## 6. Publish, only on explicit approval
 
-Call `projects.get_widget_setup` and check `setup.can_start_interviews`. If `start_blocker` is set (for example `insufficient_credits`), say so and point to the UserTold dashboard; publishing won't produce interviews until it's cleared.
+Call `projects.get_widget_setup` and check `setup.can_start_interviews`. If `start_blocker` is set (for example `insufficient_credits`), say so and point to the UserTold dashboard; publishing won't produce sessions until it's cleared.
 
-Summarize what will happen: which pages, what the invitation says, and that interviews are billed by recorded time to their UserTold balance under current pricing once they finish processing. Then ask. Only after a clear yes, call `studies.update` with `status: "active"`.
+Summarize what will happen: which pages, what the invitation says, and that sessions are billed by recorded time to their UserTold balance under current pricing once they finish processing. Then ask. Only after a clear yes, call `studies.update` with `status: "active"`.
 
-- `paused` stops new interviews temporarily, and `closed` ends the collection cycle. Neither interrupts an interview already in progress, and both can return to `active`.
-- After launch, suggest the user complete one interview themselves through the real entry path. Then check `interviews.list` and `interviews.processing_status` to confirm the recording and transcript arrived.
+- `paused` stops new sessions temporarily, and `closed` ends the collection cycle. Neither interrupts a session already in progress, and both can return to `active`.
+- After launch, suggest the user complete one test themselves through the real entry path. Then check `interviews.list` and `interviews.processing_status` to confirm the recording and transcript arrived.
 
 ## Not showing up?
 
